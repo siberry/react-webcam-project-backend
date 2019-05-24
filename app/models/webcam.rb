@@ -1,2 +1,3 @@
 class Webcam < ApplicationRecord
+  
 end

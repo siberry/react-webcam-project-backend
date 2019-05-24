@@ -13,7 +13,8 @@ def get_JSON_response(url) #returns array of webcam objects
       "X-RapidAPI-Key" => "b3fd4f6beamshfff36b82a27b1eap1031fajsn0f0dc8486196"
     }
   )
-  JSON.parse(response)["result"]["webcams"]
+  parsed = JSON.parse(response)["result"]["webcams"]
+  return parsed
 end
 
 def create_webcam_instance(webcam_object, featured=false)
@@ -28,20 +29,28 @@ def create_webcam_instance(webcam_object, featured=false)
 end
 
 
-webcam = get_JSON_response('https://webcamstravel.p.rapidapi.com/webcams/list/webcam=1511477795?lang=en&show=webcams%3Aimage%2Clocation%2Cplayer').first
+# webcam = get_JSON_response('https://webcamstravel.p.rapidapi.com/webcams/list/webcam=1511477795?lang=en&show=webcams%3Aimage%2Clocation%2Cplayer').first
 
-create_webcam_instance(webcam, true)
+# create_webcam_instance(webcam, true)
 
-# t.string :title, t.string :player_url, t.string :img_url, t.integer :api_id, t.boolean :featured, t.string :country, t.string :continent, t.string :town
+def get_countries(offset)
+  base = 'https://webcamstravel.p.rapidapi.com/webcams/list/limit=50,'
+  modifier = '?property=hd?lang=en&show=webcams%3Aimage%2Clocation%2Cplayer'
+  countries = []
+  get_JSON_response(base + offset.to_s + modifier).each { |webcam|
+    countries << webcam["location"]["country"]
+  }
+  countries.uniq
+end
 
+offset = 0
+countries = []
 
-# continents = [[term_type: "continent", search_term: "Africa", link_term: "AF"],
-  # [term_type: "continent", search_term: "Antarctica", link_term: "AN"],
-  # [term_type: "continent", link_term: "AS", search_term: 'Asia'],
-  # [term_type: "continent", link_term: "EU", search_term: 'Europe'],
-  # [term_type: "continent", link_term: "NA" , search_term: 'North America'],
-  # [term_type: "continent", link_term: "OC" , search_term: 'Oceania'],
-  # [term_type: "continent", link_term: "SA" , search_term: 'South America']]
-# continents.each do |continent|
-  # SearchTerm.create(continent)
-# end
+while offset < 32369
+  countries << get_countries(offset)
+  offset += 50
+end
+
+hdCountries = countries.flatten.uniq
+puts hdCountries.length
+puts hdCountries.sort
