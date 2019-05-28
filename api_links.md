@@ -6,3 +6,7 @@ https://webcamstravel.p.rapidapi.com/webcams/list/limit=50,0?property=hd?lang=en
 -limit 50, offset 0, HD, show webcams, image, location, player
 https://webcamstravel.p.rapidapi.com/webcams/list/webcam=1511477795?lang=en&show=webcams%3Aimage%2Clocation%2Cplayer
 -link to specific webcam
+https://webcamstravel.p.rapidapi.com/webcams/list/country=US?lang=en&show=webcams%3Aimage%2Clocation%2Cplayer
+-US videos with default limit of 10
+
+https://webcamstravel.p.rapidapi.com/webcams/list/limit=20,0?property=hd?country=US?lang=en&show=webcams%3Aimage%2Clocation%2Cplayer

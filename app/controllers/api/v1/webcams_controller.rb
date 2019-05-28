@@ -1,8 +1,15 @@
 class Api::V1::WebcamsController < ApplicationController
+  def index
+    webcams = Webcam.all
+
+    render json: webcams
+  end
+
   def search
     term = params["selectedCountry"]
-    url = "https://webcamstravel.p.rapidapi.com/webcams/list/limit=20,0?country=#{term}?lang=en&show=webcams%3Awebcams%2Clocation%2Cplayer%2Cimage"
+    url = "https://webcamstravel.p.rapidapi.com/webcams/list/country=#{term}/property=hd/limit=20,0?lang=en&show=webcams%3Awebcams%2Clocation%2Cplayer%2Cimage"
     response = get_JSON_response(url)
+
     webcams = response.map { |webcam| create_webcam_instance(webcam) }
 
     render json: webcams
@@ -28,5 +35,9 @@ class Api::V1::WebcamsController < ApplicationController
     continent: webcam_object["location"]["continent"],
     region: webcam_object["location"]["region"],
     featured: featured)
+  end
+
+  def create_webcam_from_API_id(id)
+    create_webcam_instance(get_JSON_response("https://webcamstravel.p.rapidapi.com/webcams/list/webcam=#{id}?lang=en&show=webcams%3Aimage%2Clocation%2Cplayer").first)
   end
 end
