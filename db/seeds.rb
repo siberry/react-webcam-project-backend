@@ -18,7 +18,7 @@ def get_JSON_response(url) #returns array of webcam objects
 end
 
 def create_webcam_instance(webcam_object, featured=false)
-  Webcam.create(title: webcam_object["title"],
+  Webcam.find_or_create_by(title: webcam_object["title"],
   img_url: webcam_object["image"]["daylight"]["preview"],
   player_url: webcam_object["player"]["month"]["embed"],
   api_id: webcam_object["id"],
@@ -28,6 +28,13 @@ def create_webcam_instance(webcam_object, featured=false)
   featured: featured)
 end
 
+def create_webcam_from_API_id(id)
+  create_webcam_instance(get_JSON_response("https://webcamstravel.p.rapidapi.com/webcams/list/webcam=#{id}?lang=en&show=webcams%3Aimage%2Clocation%2Cplayer").first)
+end
+
+newWebcam = create_webcam_from_API_id(1170887551)
+
+puts newWebcam
 
 # webcam = get_JSON_response('https://webcamstravel.p.rapidapi.com/webcams/list/webcam=1511477795?lang=en&show=webcams%3Aimage%2Clocation%2Cplayer').first
 
@@ -43,14 +50,14 @@ def get_countries(offset)
   countries.uniq
 end
 
-offset = 0
-countries = []
-
-while offset < 32369
-  countries << get_countries(offset)
-  offset += 50
-end
-
-hdCountries = countries.flatten.uniq
-puts hdCountries.length
-puts hdCountries.sort
+# offset = 0
+# countries = []
+#
+# while offset < 32369
+#   countries << get_countries(offset)
+#   offset += 50
+# end
+#
+# hdCountries = countries.flatten.uniq
+# puts hdCountries.length
+# puts hdCountries.sort
