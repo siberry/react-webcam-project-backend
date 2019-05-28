@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       post "/search", to: "webcams#search"
+      get "/featured", to: "webcams#featured"
       resources :webcams, only: :index
     end
   end

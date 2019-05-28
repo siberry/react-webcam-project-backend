@@ -15,6 +15,12 @@ class Api::V1::WebcamsController < ApplicationController
     render json: webcams
   end
 
+  def featured
+    featured_webcams = Webcam.all.where(featured: true)
+
+    render json: featured_webcams
+  end
+
   def get_JSON_response(url) #returns array of webcam objects
     response = RestClient.get(url,
       headers={
