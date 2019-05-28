@@ -40,6 +40,7 @@ class Api::V1::WebcamsController < ApplicationController
     country: webcam_object["location"]["country"],
     continent: webcam_object["location"]["continent"],
     region: webcam_object["location"]["region"],
+    town: webcam_object["location"]["city"],
     featured: featured)
   end
 
