@@ -5,6 +5,12 @@ class Api::V1::WebcamsController < ApplicationController
     render json: webcams
   end
 
+  def show
+    webcam = Webcam.find(params[:id])
+
+    render json: webcam
+  end
+
   def search
     term = params["selectedCountry"]
     url = "https://webcamstravel.p.rapidapi.com/webcams/list/country=#{term}/property=hd/limit=20,0?lang=en&show=webcams%3Awebcams%2Clocation%2Cplayer%2Cimage"
